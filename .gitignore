@@ -1,0 +1,8 @@
+logs/*
+!/logs/git_placeholder
+
+target/*
+!/target/git_placeholder
+
+.idea
+.DS_Store

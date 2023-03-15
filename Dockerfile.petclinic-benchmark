@@ -1,0 +1,6 @@
+FROM tools-base
+WORKDIR /home/myapp
+ADD benchmark.sh .
+ADD target/app.jar .
+RUN chmod 777 benchmark.sh
+CMD bash -C '/home/myapp/benchmark.sh';'/usr/bin/bash'

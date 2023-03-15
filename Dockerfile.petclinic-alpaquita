@@ -1,0 +1,4 @@
+FROM bellsoft/liberica-runtime-container:jre-17-stream-musl
+WORKDIR /home/myapp
+ADD ./target/app.jar .
+CMD ["java", "-jar", "app.jar"]

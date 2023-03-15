@@ -1,0 +1,19 @@
+FROM dist-base
+WORKDIR /home/myapp
+RUN apk update
+RUN apk add apache2-utils
+RUN apk add abuild build-base git curl openssl openssl-dev zlib-dev bash
+
+RUN curl "https://github.com/giltene/wrk2/archive/master.zip" -L -o wrk2.zip
+RUN unzip wrk2.zip \
+    && mv wrk2-master wrk2 \
+    && cd wrk2 \
+    && make
+RUN mv ./wrk2/wrk /usr/bin \
+    && rm wrk2.zip \
+    && rm -rf ./wrk2
+
+RUN apk add python3 python3-dev
+RUN python -m ensurepip --upgrade
+RUN pip3 install --upgrade pip
+RUN pip3 install psrecord
