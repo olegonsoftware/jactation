@@ -1,0 +1,28 @@
+group "alpaquita" {
+  targets = [
+            "tools-alpaquita",
+            "petclinic-alpaquita",
+            "petclinic-benchmark-alpaquita",
+            ]
+}
+
+target "tools-alpaquita" {
+  dockerfile = "dist/Dockerfile.tools-alpine"
+  tags = ["tools-alpaquita:v1"]
+  contexts = {
+        dist-base = "docker-image://bellsoft/liberica-runtime-container:jre-11-stream-musl"
+  }
+}
+
+target "petclinic-alpaquita" {
+  dockerfile = "kit/Dockerfile.petclinic-alpaquita"
+  tags = ["petclinic-alpaquita:v1"]
+}
+
+target "petclinic-benchmark-alpaquita" {
+  dockerfile = "tools/Dockerfile.petclinic-benchmark"
+  tags = ["petclinic-benchmark-alpaquita:v1"]
+  contexts = {
+        tools-base = "target:tools-alpaquita"
+  }
+}

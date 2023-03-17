@@ -1,0 +1,28 @@
+group "temurin" {
+  targets = [
+            "tools-temurin",
+            "petclinic-temurin",
+            "petclinic-benchmark-temurin",
+            ]
+}
+
+target "tools-temurin" {
+  dockerfile = "dist/Dockerfile.tools-debian"
+  tags = ["tools-temurin:v1"]
+  contexts = {
+        dist-base = "docker-image://eclipse-temurin:11-jre-jammy"
+  }
+}
+
+target "petclinic-temurin" {
+  dockerfile = "kit/Dockerfile.petclinic-temurin"
+  tags = ["petclinic-temurin:v1"]
+}
+
+target "petclinic-benchmark-temurin" {
+  dockerfile = "tools/Dockerfile.petclinic-benchmark"
+  tags = ["petclinic-benchmark-temurin:v1"]
+  contexts = {
+        tools-base = "target:tools-temurin"
+  }
+}

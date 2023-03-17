@@ -1,7 +1,0 @@
-FROM bellsoft/liberica-runtime-container:jdk-17-stream-musl
-WORKDIR /home/myapp
-RUN apk add curl unzip
-RUN curl https://codeload.github.com/spring-projects/spring-petclinic/zip/refs/heads/main --output spring-petclinic-main.zip
-RUN unzip ./spring-petclinic-main.zip
-RUN cd /home/myapp/spring-petclinic-main && ./mvnw dependency:resolve
-RUN rm -rf /home/myapp/repo

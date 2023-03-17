@@ -1,0 +1,28 @@
+group "semeru" {
+  targets = [
+            "tools-semeru",
+            "petclinic-semeru",
+            "petclinic-benchmark-semeru",
+            ]
+}
+
+target "tools-semeru" {
+  dockerfile = "dist/Dockerfile.tools-centos"
+  tags = ["tools-semeru:v1"]
+  contexts = {
+        dist-base = "docker-image://ibm-semeru-runtimes:open-11-jre-centos7"
+  }
+}
+
+target "petclinic-semeru" {
+  dockerfile = "kit/Dockerfile.petclinic-semeru"
+  tags = ["petclinic-semeru:v1"]
+}
+
+target "petclinic-benchmark-semeru" {
+  dockerfile = "tools/Dockerfile.petclinic-benchmark"
+  tags = ["petclinic-benchmark-semeru:v1"]
+  contexts = {
+        tools-base = "target:tools-semeru"
+  }
+}

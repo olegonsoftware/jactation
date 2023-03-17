@@ -1,0 +1,4 @@
+FROM eclipse-temurin:11-jre-jammy
+WORKDIR /home/myapp
+ADD ./target/app.jar .
+CMD ["java", "-jar", "app.jar"]

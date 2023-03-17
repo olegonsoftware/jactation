@@ -1,0 +1,28 @@
+group "official" {
+  targets = [
+            "tools-official",
+            "petclinic-official",
+            "petclinic-benchmark-official",
+            ]
+}
+
+target "tools-official" {
+  dockerfile = "dist/Dockerfile.tools-debian"
+  tags = ["tools-official:v1"]
+  contexts = {
+        dist-base = "docker-image://openjdk:11-jre-slim-buster"
+  }
+}
+
+target "petclinic-official" {
+  dockerfile = "kit/Dockerfile.petclinic-official"
+  tags = ["petclinic-official:v1"]
+}
+
+target "petclinic-benchmark-official" {
+  dockerfile = "tools/Dockerfile.petclinic-benchmark"
+  tags = ["petclinic-benchmark-official:v1"]
+  contexts = {
+        tools-base = "target:tools-official"
+  }
+}

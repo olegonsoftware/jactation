@@ -1,0 +1,9 @@
+FROM bellsoft/liberica-runtime-container:jdk-11-stream-musl
+WORKDIR /home/myapp
+RUN apk add curl unzip
+# The last commit before migration to Spring Boot 3 and Java 17
+RUN curl -L https://github.com/spring-projects/spring-petclinic/archive/a5cbb8505a1df3c348c06607933a07fc8c87c222.zip --output spring-petclinic-main.zip
+RUN unzip ./spring-petclinic-main.zip
+RUN mv /home/myapp/spring-petclinic-a5cbb8505a1df3c348c06607933a07fc8c87c222 /home/myapp/spring-petclinic-main
+RUN cd /home/myapp/spring-petclinic-main && ./mvnw dependency:resolve
+RUN rm -rf /home/myapp/repo
