@@ -104,14 +104,14 @@ def plot_single(df, config):
 def plot_multiple(df, labels):
     # create a summary hystogram
 
-    hs = df.plot.hist(column=labels, figsize=(10, 8))
+    hs = df.plot.hist(column=labels, figsize=(20, 8))
     fig = hs.get_figure()
     fig.savefig(os.path.join("plot", "frequency.png"))
 
 
 def plot_multiple_median(df, labels):
     # create a summary barplot
-    
+
     medians = []
     for label in labels:
         medians.append(df[label].median())

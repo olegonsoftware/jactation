@@ -9,6 +9,8 @@ group "tools" {
   targets = [
             "tools-alpaquita",
             "tools-official",
+            "tools-semeru",
+            "tools-temurin",
             "tools-python"
             ]
 }
@@ -25,6 +27,20 @@ group "official" {
   targets = [
             "petclinic-official",
             "petclinic-benchmark-official",
+            ]
+}
+
+group "semeru" {
+  targets = [
+            "petclinic-semeru",
+            "petclinic-benchmark-semeru",
+            ]
+}
+
+group "temurin" {
+  targets = [
+            "petclinic-temurin",
+            "petclinic-benchmark-temurin",
             ]
 }
 
@@ -56,6 +72,23 @@ target "tools-official" {
         dist-base = "docker-image://openjdk:17-slim-buster"
   }
 }
+
+target "tools-semeru" {
+  dockerfile = "Dockerfile.tools-centos"
+  tags = ["tools-semeru:v1"]
+  contexts = {
+        dist-base = "docker-image://ibm-semeru-runtimes:open-17-jre-centos7"
+  }
+}
+
+target "tools-temurin" {
+  dockerfile = "Dockerfile.tools-debian"
+  tags = ["tools-temurin:v1"]
+  contexts = {
+        dist-base = "docker-image://eclipse-temurin:17.0.6_10-jre-jammy"
+  }
+}
+
 
 target "tools-python" {
   dockerfile = "Dockerfile.tools-python"
@@ -90,5 +123,32 @@ target "petclinic-benchmark-official" {
   tags = ["petclinic-benchmark-official:v1"]
   contexts = {
         tools-base = "target:tools-official"
+  }
+}
+
+target "petclinic-semeru" {
+  dockerfile = "Dockerfile.petclinic-semeru"
+  tags = ["petclinic-semeru:v1"]
+}
+
+target "petclinic-benchmark-semeru" {
+  dockerfile = "Dockerfile.petclinic-benchmark"
+  tags = ["petclinic-benchmark-semeru:v1"]
+  contexts = {
+        tools-base = "target:tools-semeru"
+  }
+}
+
+
+target "petclinic-temurin" {
+  dockerfile = "Dockerfile.petclinic-temurin"
+  tags = ["petclinic-temurin:v1"]
+}
+
+target "petclinic-benchmark-temurin" {
+  dockerfile = "Dockerfile.petclinic-benchmark"
+  tags = ["petclinic-benchmark-temurin:v1"]
+  contexts = {
+        tools-base = "target:tools-temurin"
   }
 }

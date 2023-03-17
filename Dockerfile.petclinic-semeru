@@ -1,0 +1,4 @@
+FROM ibm-semeru-runtimes:open-17-jre-centos7
+WORKDIR /home/myapp
+ADD ./target/app.jar .
+CMD ["java", "-jar", "app.jar"]
