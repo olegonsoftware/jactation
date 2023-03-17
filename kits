@@ -1,0 +1,3 @@
+#!/bin/bash
+
+export KITS=(alpaquita official semeru temurin)

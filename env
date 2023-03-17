@@ -1,0 +1,10 @@
+#!/bin/bash
+
+export TARGETDIR=$(pwd)/target
+export LOGDIR=$(pwd)/logs
+export APPJAR=$TARGETDIR/app.jar
+
+mkdir $TARGETDIR || true
+mkdir $LOGDIR || true
+
+function join_by { local IFS="$1"; shift; echo "$*"; }

@@ -1,11 +1,7 @@
 #!/bin/bash
 
-export TARGETDIR=$(pwd)/target
-export LOGDIR=$(pwd)/logs
-export APPJAR=$TARGETDIR/app.jar
-
-mkdir $TARGETDIR || true
-mkdir $LOGDIR || true
+source $(pwd)/kits
+source $(pwd)/env
 
 makejar() {
 echo "Building Spring Petclinic into $APPJAR"
@@ -24,8 +20,7 @@ echo "Building Benchmark Tools [DONE]"
 
 makeenv() {
 export CONFIG=$1
-docker buildx bake --progress plain --load -f bake.hcl $CONFIG
-docker buildx bake --progress plain --load -f bake.hcl $CONFIG
+docker buildx bake --progress plain --load -f bake.hcl -f kit/Bakefile.petclinic-$CONFIG $CONFIG
 }
 
 if [ "$1" = "custom" ]; then
@@ -39,10 +34,11 @@ else
   makejar
 fi
 
-
 maketools
 
-makeenv "alpaquita"
-makeenv "official"
-makeenv "semeru"
-makeenv "temurin"
+
+for item in ${KITS[*]}
+do
+    printf "Using build kit:   %s\n" $item
+    makeenv $item
+done

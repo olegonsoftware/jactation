@@ -12,7 +12,8 @@ export OPENJDK_OPTS="-Xmx1G -XX:SharedArchiveFile=app-cds.jsa -XX:TieredStopAtLe
 export VMNAME=`java -XshowSettings:properties -version 2>&1 | grep "java.vm.name"  | sed 's/.*=//' | sed -e 's/^[[:space:]]*//'`
 echo "Virtual machine: $VMNAME"
 
-# Fix JVM options for fair competition: https://bell-sw.com/announcements/2022/06/28/hotspot-vs-openj9-performance-comparison/
+# Different VMs must have different initial values
+# https://bell-sw.com/announcements/2022/06/28/hotspot-vs-openj9-performance-comparison/
 if [[ $VMNAME == *J9* ]];
 then
   echo "Applying J9-specific VM options"

@@ -1,11 +1,7 @@
 #!/bin/bash
 
-export TARGETDIR=$(pwd)/target
-export LOGDIR=$(pwd)/logs
-export APPJAR=$TARGETDIR/app.jar
-
-mkdir $TARGETDIR || true
-mkdir $LOGDIR || true
+source $(pwd)/kits
+source $(pwd)/env
 
 maketest() {
 export CONFIG=$1
@@ -38,11 +34,13 @@ docker cp tools-python:/home/myapp/plot/. $LOGDIR || true
 echo "Plots for $PYTHON_PARAMS [DONE]"
 }
 
-maketest "alpaquita"
-maketest "official"
-maketest "semeru"
-maketest "temurin"
+for item in ${KITS[*]}
+do
+    printf "Using test kit:   %s\n" $item
+    maketest $item
+done
 
-makeplots alpaquita,official,semeru,temurin
+plots=`join_by ',' $KITS`
+makeplots $plots
 
 echo "DONE"
