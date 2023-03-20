@@ -28,6 +28,6 @@ target "tools-python" {
   dockerfile = "tools/Dockerfile.tools-python"
   tags = ["tools-python:v1"]
   contexts = {
-        dist-base = "docker-image://bellsoft/liberica-runtime-container:jdk-17-stream-musl"
+        dist-base = "docker-image://bellsoft/liberica-runtime-container:jdk-11-stream-glibc"
   }
 }

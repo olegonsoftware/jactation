@@ -10,7 +10,7 @@ target "tools-temurin" {
   dockerfile = "dist/Dockerfile.tools-debian"
   tags = ["tools-temurin:v1"]
   contexts = {
-        dist-base = "docker-image://eclipse-temurin:17.0.6_10-jre-jammy"
+        dist-base = "docker-image://eclipse-temurin:11-jre-jammy"
   }
 }
 
