@@ -5,9 +5,10 @@ source $(pwd)/env
 
 maketest() {
 export CONFIG=$1
+export TEST_URL=$2
 echo "Running benchmarks for $CONFIG"
 docker rm petclinic-benchmark-$CONFIG
-docker run --memory=2g --mount type=bind,source="$(pwd)"/benchmark.sh,target=/home/myapp/benchmark.sh --name petclinic-benchmark-$CONFIG petclinic-benchmark-$CONFIG:v1
+docker run -e TEST_URL=$TEST_URL --memory=2g --mount type=bind,source="$(pwd)"/benchmark.sh,target=/home/myapp/benchmark.sh --name petclinic-benchmark-$CONFIG petclinic-benchmark-$CONFIG:v1
 
 echo "Making copy of logs into $LOGDIR"
 mkdir $LOGDIR || true
@@ -37,7 +38,10 @@ echo "Plots for $PYTHON_PARAMS [DONE]"
 for item in ${KITS[*]}
 do
     printf "Using test kit:   %s\n" $item
-    maketest $item
+    default_value=http://localhost:8080/owners
+    url=${1:-$default_value}
+    printf "Using endpoint:   %s\n" $url
+    maketest $item $url
 done
 
 plots=`join_by ',' $KITS`

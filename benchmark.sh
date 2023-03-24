@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export TEST_URL=http://localhost:8080/owners
-
 export INITIAL_STABILIZATION_TIME=30s
 export WORKLOAD_TIME=130s
 export POST_STABILIZATION_TIME=30s
