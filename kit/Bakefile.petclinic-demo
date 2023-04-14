@@ -1,0 +1,22 @@
+group "demo" {
+  targets = [
+            "tools-demo",
+            "petclinic-benchmark-demo",
+            ]
+}
+
+target "tools-demo" {
+  dockerfile = "dist/Dockerfile.tools-alpine"
+  tags = ["tools-demo:v1"]
+  contexts = {
+        dist-base = "oci-layout://./demo-app-bundle"
+  }
+}
+
+target "petclinic-benchmark-demo" {
+  dockerfile = "tools/Dockerfile.petclinic-benchmark"
+  tags = ["petclinic-benchmark-demo:v1"]
+  contexts = {
+        tools-base = "target:tools-demo"
+  }
+}

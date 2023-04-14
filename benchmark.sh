@@ -4,9 +4,6 @@ export INITIAL_STABILIZATION_TIME=30s
 export WORKLOAD_TIME=130s
 export POST_STABILIZATION_TIME=30s
 
-export JAVA_OPTS=""
-# source $(pwd)/jvm_specific.sh
-
 wait-url() {
     echo "Testing $1"
     timeout --foreground -s TERM 30s bash -c \
@@ -18,7 +15,8 @@ wait-url() {
 
 echo "Benchmark started"
 
-java -jar $JAVA_OPTS /home/myapp/app.jar &
+cd "$BENCH_WORKDIR"
+eval "$BENCH_COMMAND &"
 pid=$!
 
 wait-url $TEST_URL

@@ -6,9 +6,28 @@ source $(pwd)/env
 maketest() {
 export CONFIG=$1
 export TEST_URL=$2
+if [[ "${CONFIG}" == "demo" ]]; then
+    inspect=$(pack inspect demo-app -o json)
+    wdir=$(echo $inspect | jq -r '.local_info.processes[] | select (.default == true)."working-dir"')
+    cmd=$(echo $inspect | jq -r '.local_info.processes[] | select (.default == true).command')
+    readarray -t args < <(jq -c -r '.local_info.processes[] | select (.default == true).args[]' out.json)
+    IFS=$'\n'
+    for arg in ${args[@]}; do
+        cmd="$cmd $arg"
+    done
+    unset IFS
+    export BENCH_WORKDIR="$wdir"
+    export BENCH_COMMAND="$cmd"
+    echo "Using demo-app container"
+    echo "Working directory: $wdir"
+    echo "Command: $cmd"
+else
+    export BENCH_WORKDIR='/home/myapp'
+    export BENCH_COMMAND='java -jar /home/myapp/app.jar'
+fi
 echo "Running benchmarks for $CONFIG"
-docker rm petclinic-benchmark-$CONFIG
-docker run -e TEST_URL=$TEST_URL --memory=2g --mount type=bind,source="$(pwd)"/benchmark.sh,target=/home/myapp/benchmark.sh --name petclinic-benchmark-$CONFIG petclinic-benchmark-$CONFIG:v1
+docker rm petclinic-benchmark-$CONFIG || true
+docker run -e TEST_URL=$TEST_URL -e BENCH_WORKDIR="$BENCH_WORKDIR" -e BENCH_COMMAND="$BENCH_COMMAND" --memory=2g --mount type=bind,source="$(pwd)"/benchmark.sh,target=/home/myapp/benchmark.sh --name petclinic-benchmark-$CONFIG petclinic-benchmark-$CONFIG:v1
 
 echo "Making copy of logs into $LOGDIR"
 mkdir $LOGDIR || true
@@ -41,7 +60,7 @@ do
     default_value=http://localhost:8080/owners
     url=${1:-$default_value}
     printf "Using endpoint:   %s\n" $url
-    # maketest $item $url
+    maketest $item $url
 done
 
 counter=0
