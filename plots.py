@@ -9,6 +9,10 @@ import pandas as pd
 psr_regexp = r"(\d+.\d+)\s+(\d+.\d+)\s+(\d+.\d+)\s+(\d+.\d+)"
 
 # plots.py alpaquita,official
+if (len(sys.argv) == 1):
+    print("No configurations available")
+    sys.exit()
+
 configs = sys.argv[1].split(',')
 print("configurations: ", configs)
 
