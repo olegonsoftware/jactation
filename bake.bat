@@ -46,7 +46,7 @@ REM ============================================================================
 echo "Building Spring Petclinic into %APPJAR%"
 docker buildx bake --progress plain --load -f bake.hcl jar
 
-set SRCJAR=/home/myapp/spring-petclinic-main/target/spring-petclinic-2.7.3.jar
+set SRCJAR=/home/myapp/spring-petclinic-main/target/spring-petclinic-3.0.0-SNAPSHOT.jar
 docker run --rm --entrypoint cat petclinic-builder:v1 %SRCJAR% > %APPJAR%
 echo "Building JAR [DONE]"
 

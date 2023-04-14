@@ -19,7 +19,7 @@ echo "Benchmarks for $CONFIG [DONE]"
 makeplots() {
 export PYTHON_PARAMS="$@"
 
-echo "Creating plots for for $PYTHON_PARAMS"
+echo "Creating plots for $PYTHON_PARAMS"
 docker rm tools-python
 docker run \
 --mount type=bind,source="$(pwd)"/plots.py,target=/home/myapp/plots.py \
@@ -41,10 +41,21 @@ do
     default_value=http://localhost:8080/owners
     url=${1:-$default_value}
     printf "Using endpoint:   %s\n" $url
-    maketest $item $url
+    # maketest $item $url
 done
 
-plots=`join_by ',' $KITS`
+counter=0
+plots=""
+for item in ${KITS[*]}
+do
+    if [[ "${counter}" == "0" ]]; then
+        plots=$item
+        counter=1
+    else
+        plots="$plots,$item"
+    fi
+done
+
 makeplots $plots
 
 echo "DONE"

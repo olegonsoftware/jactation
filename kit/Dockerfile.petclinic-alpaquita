@@ -1,4 +1,4 @@
-FROM bellsoft/liberica-runtime-container:jre-11-slim-stream-musl
+FROM bellsoft/liberica-runtime-container:jre-17-slim-stream-musl
 ENV TEST_URL http://localhost:8080/owners
 WORKDIR /home/myapp
 ADD ./target/app.jar .

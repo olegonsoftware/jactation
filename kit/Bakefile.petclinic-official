@@ -10,7 +10,7 @@ target "tools-official" {
   dockerfile = "dist/Dockerfile.tools-debian"
   tags = ["tools-official:v1"]
   contexts = {
-        dist-base = "docker-image://openjdk:11-jre-slim-buster"
+        dist-base = "docker-image://openjdk:17-ea-slim-buster"
   }
 }
 

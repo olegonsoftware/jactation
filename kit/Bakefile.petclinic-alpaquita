@@ -10,7 +10,7 @@ target "tools-alpaquita" {
   dockerfile = "dist/Dockerfile.tools-alpine"
   tags = ["tools-alpaquita:v1"]
   contexts = {
-        dist-base = "docker-image://bellsoft/liberica-runtime-container:jre-11-stream-musl"
+        dist-base = "docker-image://bellsoft/liberica-runtime-container:jre-17-stream-musl"
   }
 }
 
