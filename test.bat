@@ -6,10 +6,16 @@ set S=%~dpnx0
 call %D%kits.bat
 call %D%env.bat
 
+set DEFAULT_URL=http://localhost:8080/owners
+if not ["%~1"]==[""] (
+    set DEFAULT_URL=%~1
+)
+echo Using URL: %DEFAULT_URL%
+
 if ["%~1"]==[""] (
     (for %%a in (%KITS%) do (
        echo "Using build kit:   %%a"
-       call :maketest %%a
+       call :maketest %%a %DEFAULT_URL%
     ))
 ) else (
     echo "Skipping benchmarks"
@@ -38,10 +44,11 @@ REM ============================================================================
 :maketest
 
 set CONFIG=%~1
+set TEST_URL=%~2
 
 echo "Running benchmarks for %CONFIG%"
 docker rm petclinic-benchmark-%CONFIG%
-docker run --memory=3g --mount type=bind,source=%D%benchmark.sh,target=/home/myapp/benchmark.sh --name petclinic-benchmark-%CONFIG% petclinic-benchmark-%CONFIG%:v1
+docker run -e TEST_URL=%TEST_URL% --memory=3g --mount type=bind,source=%D%benchmark.sh,target=/home/myapp/benchmark.sh --name petclinic-benchmark-%CONFIG% petclinic-benchmark-%CONFIG%:v1
 
 echo "Making copy of logs into %LOGDIR%"
 mkdir %LOGDIR%
